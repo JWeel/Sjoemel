@@ -20,25 +20,6 @@ class Auto:
         self.Toegestanemaximummassavoertuig = aspects[15]
         self.Vermogen = aspects[16]
         self.Zuinigheidslabel = aspects[17]
-
-        # self.Aantalcilinders = ""
-        # self.Aantalzitplaatsen = ""
-        # self.Brandstofverbruikbuitenweg = ""
-        # self.Brandstofverbruikgecombineerd = ""
-        # self.Brandstofverbruikstad = ""
-        # self.Cilinderinhoud = ""
-        # self.CO2uitstootgecombineerd = ""
-        # self.Datumeerstetoelating = ""
-        # self.Handelsbenaming = ""
-        # self.Hoofdbrandstof = ""
-        # self.Inrichting = ""
-        # self.Massaleegvoertuig = ""
-        # self.Merk = ""
-        # self.Milieuclassificatie = ""
-        # self.Nevenbrandstof = ""
-        # self.Toegestanemaximummassavoertuig = ""
-        # self.Vermogen = ""
-        # self.Zuinigheidslabel = ""
     
     def printCar(self):
         print self.Merk, self.Handelsbenaming
@@ -105,13 +86,8 @@ def getData(dataFile):
         aspects2 = ""
         cars = []
         reader = csv.reader(csvfile, "SKV")
-        # for row in reader:
-        #     aspects = row
-        #     break
         for row in reader:
-            #aspects2 = row
             cars.append(Auto(row))
-            #break
         j = 0
         print len(cars)
         uniqueCars = []
@@ -130,58 +106,6 @@ def getData(dataFile):
                 f.write(cars[i].returnPrintable())
         print len(uniqueCars)
         f.close()
-        #auto2 = Auto(aspects2)
-        #if compareCars(auto1, auto2):
-        #    print "yes!"
-        #else
-        # for aspect in aspects:
-        #     print j, aspect
-        #     j += 1
-        # j = 0
-        #f = open("naam.csv", 'w')
-
-        # merken = dict()
-
-        # for row in reader:
-            
-
-        # for row in reader:
-        #     hole = False
-        #     j += 1
-        #     i = 0
-        #     for aspect in row:
-        #         if aspect == "":
-                #if aspect == "" and i == 12:# and i == 13 and row[2] != "":
-                # if i == 12:
-                #     if aspect in merken:
-                #         merken[aspect] += 1
-                #     else:
-                #         merken[aspect] = 1
-                    # if aspect not in merken:
-                        # merken.append(aspect)
-                        # print aspect
-                        #print j, ":", aspects[i]
-                    #print j, row[2]
-                #     hole = True
-                # i += 1
-        # print len(merken)
-        # for merk in merken:
-            # print merk, merken[merk]
-        # print(merken)
-            # if not hole:
-            #     f.write(str(row))
-            #     f.write("\n")
-        # f.close()
-        # for row in reader:
-        #     for aspect in row:
-        #         if aspect == ""
-
-            #x.append((map(str, row[0:-1])))
-            #y.append(map(int, row[-1]))
-            #y.append(map(str, row[-1]))
-        #print row[5]
-    # return (x, y)
 
 if __name__ == '__main__':
-    #getData("Voertuig Open Data-KENT_VRTG_O_DAT.csv")
     getData("minder_kolommen2.csv")

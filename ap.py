@@ -6,18 +6,32 @@ from sklearn import metrics
 from sklearn.datasets.samples_generator import make_blobs
 from sklearn.preprocessing import StandardScaler
 
-
-with open("trainingLabeled.csv") as f:
-	ding = []
-	r = csv.reader(f)
-	for row in r:
-		things = []
-		for thing in row:
-			things.append(int(thing))
-		ding.append(things)
-
-print ding
-
+import numpy as np
+from sklearn.cluster import KMeans
+from Car import *
+import csv
+import matplotlib.pyplot as plt
+ 
+class SKV(csv.excel):
+    delimiter = ","
+ 
+csv.register_dialect("SKV", SKV)
+ 
+def getData(dataFile, hoofdbrandstof):
+    cars = []
+    with open(dataFile, "rU") as csvfile:
+        reader = csv.reader(csvfile, "SKV")
+ 
+        # skip titles
+        reader.next()
+        for row in reader:
+            car = Car()
+            car.fillAspects(row)
+            if car.Hoofdbrandstof == hoofdbrandstof:
+                cars.append(car.returnList())
+ 
+    return cars
+ 
 
 """
 
@@ -28,18 +42,35 @@ X, labels_true = make_blobs(n_samples=750, centers=centers, cluster_std=0.4,
 
 X = StandardScaler().fit_transform(X)
 """
-X = ding
+X = getData("cleanData.csv", "Benzine")
 
 # Compute DBSCAN
-db = DBSCAN(eps=0.3, min_samples=10).fit(X)
-core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
-core_samples_mask[db.core_sample_indices_] = True
-labels = db.labels_
+#db = DBSCAN(eps=0.3, min_samples=10).fit(X)
+#core_samples_mask = np.zeros_like(db.labels_, dtype=bool)
+#core_samples_mask[db.core_sample_indices_] = True
 
 # Number of clusters in labels, ignoring noise if present.
-n_clusters_ = len(set(labels)) - (1 if -1 in labels else 0)
 
-print DBSCAN(eps=0.3, min_samples=10).fit_predict(X)
+predict = DBSCAN(eps=670.0, min_samples=1000).fit_predict(X)
+#labels = predict.labels_
+
+n_clusters_ = len(set(predict)) - (1 if -1 in predict else 0)
+
+count = 0
+for dingetje in predict:
+	if dingetje == -1:
+#		print dingetje
+		count += 1
+
+#for p in predict:
+#	print p
+#print predict
+#print n_clusters_
+print count
+print len(predict)
+print "Accuracy = ", str(((len(predict) - count)) / float(len(predict)) * 100) + "%"
+#labels = predict.labels_
+#print labels
 
 #print('Estimated number of clusters: %d' % n_clusters_)
 #print("Homogeneity: %0.3f" % metrics.homogeneity_score(labels_true, labels))

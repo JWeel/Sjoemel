@@ -51,7 +51,7 @@ X = getData("cleanData.csv", "Benzine")
 
 # Number of clusters in labels, ignoring noise if present.
 
-predict = DBSCAN(eps=670.0, min_samples=1000).fit_predict(X)
+predict = DBSCAN(eps=1000.0, min_samples=500).fit_predict(X)
 #labels = predict.labels_
 
 n_clusters_ = len(set(predict)) - (1 if -1 in predict else 0)
@@ -64,8 +64,8 @@ for dingetje in predict:
 
 #for p in predict:
 #	print p
-#print predict
-#print n_clusters_
+print predict
+print n_clusters_
 print count
 print len(predict)
 print "Accuracy = ", str(((len(predict) - count)) / float(len(predict)) * 100) + "%"

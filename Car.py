@@ -58,6 +58,9 @@ class Car:
         if nameAspect == "Zuinigheidslabel":
             self.Zuinigheidslabel = aspect
 
+    def printType(self):
+        return self.Merk + " " + self.Handelsbenaming
+
     def returnPrintable(self):
         printable = "" #[1:-1]
         printable += self.Aantalcilinders + ","

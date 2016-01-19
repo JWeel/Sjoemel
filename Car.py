@@ -58,6 +58,9 @@ class Car:
         if nameAspect == "Zuinigheidslabel":
             self.Zuinigheidslabel = aspect
 
+    def printType(self):
+        return self.Merk + " " + self.Handelsbenaming
+
     def returnPrintable(self):
         printable = "" #[1:-1]
         printable += self.Aantalcilinders + ","
@@ -112,6 +115,13 @@ class Car:
         elif zuinigheidsLabel == "G":
             return 7.0
 
+    def returnLinRegList(self):
+        linRegList = []
+        linRegList.append(float(self.Aantalcilinders))
+        linRegList.append(float(self.Cilinderinhoud))
+        linRegList.append(float(self.Massaleegvoertuig))
+        linRegList.append(float(self.Vermogen))
+        return linRegList
 
     def returnList(self):
         attributeList = []

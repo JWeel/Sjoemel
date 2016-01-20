@@ -3,6 +3,11 @@ import numpy as np
 import csv
 from Car import *
 
+
+############################################
+# install latest version of scikit to use MPLRegressor
+# http://scikit-learn.org/stable/developers/contributing.html#git-repo
+
 class SKV(csv.excel):
     delimiter = ","
 
@@ -34,18 +39,19 @@ def neuralNetwork(cars):
 
     (x, y) = getXandY(cars)
 
-    # mlpr = MLPRegressor(hidden_layer_sizes=(8, ), activation='logistic', 
-    #     algorithm='adam', alpha=0.0001, batch_size=200, learning_rate='constant', 
-    #     learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, 
-    #     random_state=None, tol=0.0001, verbose=False, warm_start=False, 
-    #     momentum=0.9, nesterovs_momentum=True, early_stopping=False, 
-    #     validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
 
-    # mlpr.fit(x, y)
+    mlpr = MLPRegressor(hidden_layer_sizes=(8, ), activation='logistic', 
+        algorithm='adam', alpha=0.001, batch_size=200, learning_rate='constant', 
+        learning_rate_init=0.001, power_t=0.5, max_iter=400, shuffle=True, 
+        random_state=None, tol=0.0001, verbose=False, warm_start=False, 
+        momentum=0.9, nesterovs_momentum=True, early_stopping=False, 
+        validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
 
-    # print mlpr.predict(x[:-1])
+    mlpr.fit(x, y)
+    print cars[-2].printType()
+    print mlpr.predict(x[-2])
 
-    print y
+    print mlpr.n_layers_
 
 
 if __name__ == '__main__':

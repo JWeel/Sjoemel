@@ -1,4 +1,4 @@
-from sklearn.neural_network import MLPRegressor
+#from sklearn.neural_network import MLPRegressor
 import numpy as np
 import csv
 from Car import *
@@ -20,28 +20,32 @@ def getData(dataFile, hoofdbrandstof):
                 cars.append(car)
     return cars
 
-
-
-# Multi-layer Perceptron Regressor (neural network)
-# http://scikit-learn.org/dev/modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor
-def neuralNetwork(cars):
-
+def getXandY(cars):
     x = []
     y = []
     for car in cars:
         x.append(car.returnLinRegList())
         y.append(float(car.CO2uitstootgecombineerd))
+    return (x, y)
 
-    mlpr = MLPRegressor(hidden_layer_sizes=(8, ), activation='logistic', 
-        algorithm='adam', alpha=0.0001, batch_size=200, learning_rate='constant', 
-        learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, 
-        random_state=None, tol=0.0001, verbose=False, warm_start=False, 
-        momentum=0.9, nesterovs_momentum=True, early_stopping=False, 
-        validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+# Multi-layer Perceptron Regressor (neural network)
+# http://scikit-learn.org/dev/modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor
+def neuralNetwork(cars):
 
-    mlpr.fit(x, y)
+    (x, y) = getXandY(cars)
 
-    print mlpr.predict(x[:-1])
+    # mlpr = MLPRegressor(hidden_layer_sizes=(8, ), activation='logistic', 
+    #     algorithm='adam', alpha=0.0001, batch_size=200, learning_rate='constant', 
+    #     learning_rate_init=0.001, power_t=0.5, max_iter=200, shuffle=True, 
+    #     random_state=None, tol=0.0001, verbose=False, warm_start=False, 
+    #     momentum=0.9, nesterovs_momentum=True, early_stopping=False, 
+    #     validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+
+    # mlpr.fit(x, y)
+
+    # print mlpr.predict(x[:-1])
+
+    print y
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-from sklearn.neural_network import MLPRegressor
+#from sklearn.neural_network import MLPRegressor
 import numpy as np
 import csv
 from Car import *
@@ -25,17 +25,20 @@ def getData(dataFile, hoofdbrandstof):
                 cars.append(car)
     return cars
 
-
-
-# Multi-layer Perceptron Regressor (neural network)
-# http://scikit-learn.org/dev/modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor
-def neuralNetwork(cars):
-
+def getXandY(cars):
     x = []
     y = []
     for car in cars:
         x.append(car.returnLinRegList())
         y.append(float(car.CO2uitstootgecombineerd))
+    return (x, y)
+
+# Multi-layer Perceptron Regressor (neural network)
+# http://scikit-learn.org/dev/modules/generated/sklearn.neural_network.MLPRegressor.html#sklearn.neural_network.MLPRegressor
+def neuralNetwork(cars):
+
+    (x, y) = getXandY(cars)
+
 
     mlpr = MLPRegressor(hidden_layer_sizes=(8, ), activation='logistic', 
         algorithm='l-bfgs', alpha=0.4, learning_rate='constant',

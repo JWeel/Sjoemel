@@ -4,6 +4,9 @@ from Car import *
 import matplotlib.pyplot as plt
 from scipy.special import expit
  
+# neural network implementation, source:
+# https://triangleinequality.wordpress.com/2014/03/31/neural-networks-part-2/
+
 class NeuralNetwork(object):
     def __init__(self, X, y, parameters):
         #Input data
@@ -97,10 +100,6 @@ class NeuralNetwork(object):
         return ret
 
 
-
-
-
-
 #A nd we're done! Now to test it we generate some synthetic data and supply the network with some activation functions.
 
 def logistic(x):
@@ -127,26 +126,32 @@ def test_regression(plots=False):
     X=np.linspace(0,3*np.pi,num=n)
     X.shape=(n,1)
     y=np.sin(X)
-    #We make a neural net with 2 hidden layers, 20 neurons in each, using logistic activation
-    #functions.
-    param=((1,0,0),(20, expit, logistic_prime),(20, expit, logistic_prime),(1,identity, identity_prime))
-    #Set learning rate.
-    rates=[0.05]
-    predictions=[]
-    for rate in rates:
-        N=NeuralNetwork(X,y,param)
-        N.train(4000, learning_rate=rate)
-        predictions.append([rate,N.predict(X)])
 
-    fig, ax=plt.subplots(1,1)
 
-    print "plot shit"
+    print X
 
-    if plots:
-        ax.plot(X,y, label='Sine', linewidth=2, color='black')
-        for data in predictions:
-            ax.plot(X,data[1],label="Learning Rate: "+str(data[0]))
-        ax.legend()
+    print y
+    
+    # #We make a neural net with 2 hidden layers, 20 neurons in each, using logistic activation
+    # #functions.
+    # param=((1,0,0),(20, expit, logistic_prime),(20, expit, logistic_prime),(1,identity, identity_prime))
+    # #Set learning rate.
+    # rates=[0.05]
+    # predictions=[]
+    # for rate in rates:
+    #     N=NeuralNetwork(X,y,param)
+    #     N.train(4000, learning_rate=rate)
+    #     predictions.append([rate,N.predict(X)])
 
-    plt.show()
+    # fig, ax=plt.subplots(1,1)
+
+    # print "plot shit"
+
+    # if plots:
+    #     ax.plot(X,y, label='Sine', linewidth=2, color='black')
+    #     for data in predictions:
+    #         ax.plot(X,data[1],label="Learning Rate: "+str(data[0]))
+    #     ax.legend()
+
+    # plt.show()
 test_regression(True)

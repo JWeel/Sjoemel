@@ -7,18 +7,24 @@ warnings.warn = warn
 import numpy as np
 from Car import *
 import csv
+import matplotlib.pyplot as plt
+import itertools
 
-from sklearn.cluster import AgglomerativeClustering, DBSCAN, KMeans
+from sklearn.cluster import KMeans, AgglomerativeClustering, DBSCAN
 from sklearn.neighbors import kneighbors_graph
 
-from sklearn import linear_model
 from sklearn.cross_validation import train_test_split
+
+# set plot size
+from pylab import rcParams
+rcParams['figure.figsize'] = 20, 10
 
 
 class SKV(csv.excel):
     delimiter = ","
 
 csv.register_dialect("SKV", SKV)
+
 
 def getData(dataFile, hoofdbrandstof):
     cars = []
@@ -31,30 +37,6 @@ def getData(dataFile, hoofdbrandstof):
             if car.Hoofdbrandstof == hoofdbrandstof:
                 cars.append(car)
     return cars
-
-def anomalyDetection(clusters):
-    anomalies = []
-    for cluster in clusters:
-        clusterAnomalies = []
-        clusterCO2 = []
-        for car in cluster:
-            clusterCO2.append(float(car.CO2uitstootgecombineerd))
-
-        print "size Cluster:", len(cluster), "- CO2 mean:", np.mean(clusterCO2)
-
-        twoDown = np.mean(clusterCO2) - (np.sqrt(np.var(clusterCO2)) * 2)
-
-        for i in range(len(clusterCO2)):
-            if twoDown > clusterCO2[i]:    #only low CO2 anomalies
-                clusterAnomalies.append(cluster[i])
-
-        for anomaly in clusterAnomalies:
-            print anomaly.printType(), "(", anomaly.CO2uitstootgecombineerd, ")"
-            anomalies.append(anomaly)
-        print ""
-
-    print len(anomalies), "anomalies found."
-    return anomalies
 
 
 def getCarsList(cars):
@@ -81,7 +63,7 @@ def kMeans(data, nClusters):
     clusteringData = KMeans(n_clusters=nClusters, n_init=100,
     init='random', n_jobs=4).fit(data)
     clusters = clusteringData.labels_
-    print "centers:", clusteringData.cluster_centers_
+    # print "centers:", clusteringData.cluster_centers_
     return clusters
 
 def agglom(data, n_clusters):
@@ -109,17 +91,6 @@ def dbScanPrintNonClustered(cars, predict):
             counter += 1
     print counter, "cars have not been clustered\n"
 
-def linreg(cars):
-    x = []
-    y = []
-    for car in cars:
-        x.append(car.returnLinRegList())
-        y.append(float(car.CO2uitstootgecombineerd))
-    x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=1, random_state=42)
-    regr = linear_model.LinearRegression()
-    regr.fit(x_train, y_train)
-    return regr
-
 def clusterData(cars, clusters, nClusters):
     clusteredData = makeListOfLists(nClusters)
     for i in range(len(clusters)):
@@ -127,14 +98,60 @@ def clusterData(cars, clusters, nClusters):
 
     return clusteredData
 
-def anomalyDetectionLinReg(regressionModel, cars):
-    anomalies = []
-    for car in cars:
-        predictionCO2 = regressionModel.predict(car.returnLinRegList())
-        if float(car.CO2uitstootgecombineerd) < (predictionCO2 * 0.8):
-            print car.printType()
-            anomalies.append(car)
-    print len(anomalies), "anomalies found."
+
+
+def initPlots():
+    # plt.figure(figsize=(20,10))
+    f, ((ax1, ax2), (ax3, ax4)) = plt.subplots(2, 2)
+    f.set_size_inches(30, 30)
+
+    plt.title('Clusters plotted 2d')
+    ax1.set_xlabel('Massaleegvoertuig')
+    ax1.set_ylabel('CO2')
+
+    ax2.set_xlabel('Cilinderinhoud')
+    ax2.set_ylabel('CO2')
+
+    ax3.set_xlabel('Vermogen')
+    ax3.set_ylabel('CO2')
+
+    ax4.set_xlabel('Zuinigheidslabel')
+    ax4.set_ylabel('CO2')
+
+    return ax1, ax2, ax3, ax4
+
+
+def plotClusters(clusters, subplots):
+    
+    ax1 = subplots[0]
+    colors = ["r", "b", "g", "y"]
+    for i, cluster in enumerate(clusters):
+
+        X1 = []
+        X2 = []
+        X3 = []
+        X4 = []
+        Y = []
+
+        # append the attributes of each subplot to its list
+        for car in cluster:
+            Y.append(car.CO2uitstootgecombineerd)
+            X1.append(car.Massaleegvoertuig)
+            X2.append(car.Cilinderinhoud)
+            X3.append(car.Vermogen)
+            # convert a,b,c,d.. labels to 1,2,3,4
+            X4.append(ord(car.Zuinigheidslabel.lower()) - 96)
+
+        # plot the current cluster in each subplot
+        subplots[0].scatter( X1, Y, color=colors[i])
+        subplots[1].scatter( X2, Y, color=colors[i])
+        subplots[2].scatter( X3, Y, color=colors[i])
+        subplots[3].scatter( X4, Y, color=colors[i])
+
+
+
+
+    #print clusters
 
 
 
@@ -144,22 +161,24 @@ if __name__ == '__main__':
 
     nClusters = 4
 
-    print "\n\n\nlooking for anomalies with k-means clustering"
-    clusterLabels = kMeans(data, nClusters)                  # kmeans with clusters = nClusters
-    clusters = clusterData(cars, clusterLabels, nClusters)
-    anomalyDetection(clusters)
+    ax1, ax2, ax3, ax4 = initPlots()
 
-    print "\n\n\nlooking for anomalies with agglomerative clustering"
-    clusterLabels = agglom(data, nClusters)                  # agglom with clusters = nClusters
-    clusters = clusterData(cars, clusterLabels, nClusters)
-    anomalyDetection(clusters)
+    # kmeans clustering
+    clusterLabels = kMeans(data, nClusters)                  
+    # kmeans with clusters = nClusters
+    clustersKMeans = clusterData(cars, clusterLabels, nClusters)
 
-    print "\n\n\nlooking for anomalies with dbScan"
-    clusterLabels = dbScan(cars, data, 1000.0, 100)
-    dbScanPrintNonClustered(cars, clusterLabels)
-    clusters = clusterData(cars, clusterLabels, len(set(clusterLabels)))
-    anomalyDetection(clusters)
+    # # agglomerative clustering
+    # clusterLabels = agglom(data, nClusters)                  
+    # # agglom with clusters = nClusters
+    # clustersAgglom = clusterData(cars, clusterLabels, nClusters)
 
-    print "\n\n\nlooking for anomalies with Linear Regression"
-    regressionModel = linreg(cars)
-    anomalyDetectionLinReg(regressionModel, cars)
+    # # db-scan clustering
+    # clusterLabels = dbScan(cars, data, 1000.0, 100)
+    # dbScanPrintNonClustered(cars, clusterLabels)
+    # clustersDBscan = clusterData(cars, clusterLabels, len(set(clusterLabels)))
+
+
+    plotClusters(clustersKMeans, [ax1, ax2, ax3, ax4])
+
+    plt.show()

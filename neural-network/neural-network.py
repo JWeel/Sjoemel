@@ -38,18 +38,16 @@ def neuralNetwork(cars):
         y.append(float(car.CO2uitstootgecombineerd))
 
     mlpr = MLPRegressor(hidden_layer_sizes=(8, ), activation='logistic', 
-        algorithm='adam', alpha=0.001, batch_size=200, learning_rate='constant', 
-        learning_rate_init=0.001, power_t=0.5, max_iter=400, shuffle=True, 
-        random_state=None, tol=0.0001, verbose=False, warm_start=False, 
-        momentum=0.9, nesterovs_momentum=True, early_stopping=False, 
-        validation_fraction=0.1, beta_1=0.9, beta_2=0.999, epsilon=1e-08)
+        algorithm='l-bfgs', alpha=0.4, learning_rate='constant',
+        max_iter=1000, random_state=None, tol=0.0001, verbose=False,
+        validation_fraction=0.1)
 
     mlpr.fit(x, y)
     print cars[-2].printType()
     print mlpr.predict(x[-2])
 
-    print mlpr.n_layers_
-
+    print "layers:", mlpr.n_layers_
+    print "outputs:", mlpr.n_outputs_
 
 if __name__ == '__main__':
     cars = getData("cleanDataDummy.csv", "Benzine") 

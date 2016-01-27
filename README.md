@@ -1,7 +1,27 @@
 # Sjoemel
 
-Dataset:
-https://www.dropbox.com/sh/i8tc60xwap2jmyr/AABEUNobkyNRmVXBcHss-p3Ia?dl=0
+Hier staan de programma's die gebruikt zijn voor het Leren en Beslissen project. Deze programma's hebben gebruik gemaakt van de scikit-learn toolkit en zijn geschreven in python. Python en scikit-learn moeten dus geïnstalleerd zijn om deze programma's uit te voeren. Anaconda is een python distributie waarbij scikit-learn automatisch wordt geïnstalleerd, dus om deze programma's te gebruiken wordt aanbevolen om Anaconda te installeren.
 
-Log:
-https://docs.google.com/document/d/1N8vYqsgitua_PwsFi8yDYArkF4ohUv1xzLpwe9vpEJ8/edit?ts=568e3b9a
+<hr />
+
+Nu volgt instructries voor het uitvoeren van de programma's, en wat zij doen:
+
+#### Car.py
+
+Voer dit programma uit met de volgende commando:
+
+    python car.py
+	
+Dit bestand doet dingen.
+
+#### DummyLinRegTester.py
+
+fekrf
+
+#### anomalyDetectionPlusPlus.py
+
+fekrf
+
+#### linRegTester.py
+
+fekrf

@@ -8,20 +8,22 @@ Nu volgt instructries voor het uitvoeren van de programma's, en wat zij doen:
 
 #### Car.py
 
+Car.py bevat de class Car, alle auto's uit de database worden ingelezen als Car.py objecten, zodat alle informatie over de auto's wordt behouden.
+	
+Dit programma hoeft niet uitgevoerd te worden, want het wordt automatisch aangeroepen in anomalyDetection.py en DummyLinRegTester.py.
+
+#### anomalyDetection.py
+
 Voer dit programma uit met de volgende commando:
 
-    python car.py
-	
-Dit bestand doet dingen.
+    python anomalyDetection.py
+
+Dit programma runt de clustering algoritmes en lineaire regressie op de dataset.
 
 #### DummyLinRegTester.py
 
-fekrf
+Voer dit programma uit met de volgende commando:
 
-#### anomalyDetectionPlusPlus.py
+    python DummyLinRegTester.py
 
-fekrf
-
-#### linRegTester.py
-
-fekrf
+Dit programma leest de dataset in en verlaagd van 21 (willekeurig uitgezochte) auto's de CO2Uitstoot met 5 t/m 25%. Vervolgens past het lineaire regressie toe op de aangepaste dataset. Het programma schrijft in de console welke (en hoeveel) dummies gevonden worden.

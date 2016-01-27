@@ -1,3 +1,8 @@
+# Universiteit van Amsterdam - Kunstmatige Intelligentie BSc
+# Leren en Beslissen Project - Sjoemel
+# Jelmer Alphenaar, Tjalling Haije, Joseph Weel & Roderick van der Weerdt
+# 27 januari 2016
+
 # ignore deprecated warnings
 def warn(*args, **kwargs):
     pass
@@ -81,6 +86,7 @@ def clusterData(cars, clusters, nClusters):
     return clusteredData
 
 def predictionLinReg(cars):
+    print "using Linear Regression for predictions..."
     predictions = []
     predCumalative = 0
     for car in cars:
@@ -102,35 +108,31 @@ def dummyCO2(percentage, oldCO2):
     return float(oldCO2) * (1.0 - (percentage / 100.0))
 
 def makeDummies(cars):
-    #dummies = []
+    nDummies = 21
     deviation = 5
-    for i in range(0, 21):
+    for i in range(0, nDummies):
         randomInt = np.random.randint(0,len(cars))
         cars[randomInt].Handelsbenaming = "Dummy" + str(deviation + i)
         cars[randomInt].CO2uitstootgecombineerd = str(dummyCO2((deviation + i), cars[randomInt].CO2uitstootgecombineerd))
-        #dummies.append(cars[randomInt].returnPrintable())
+    print "created", nDummies, "dummies in the dataset"  
     return cars
 
 if __name__ == '__main__':
-    cars = getData("benzineVeelDummies.csv", "Benzine")
+    cars = getData("benzineData.csv", "Benzine")
     data = getCarsList(cars)
 
     cars = makeDummies(cars)
 
-    linregON = True
-    if linregON:
-        print "looking for anomalies with Linear Regression"
-        regressionModel = linreg(cars)
-        # predictions = predictionLinReg(cars[0:100])
-        predictions = predictionLinReg(cars)
+    regressionModel = linreg(cars)
+    predictions = predictionLinReg(cars)
 
-        preds = []
-        for i in range(0, len(predictions)):
-            prediction = predictions[i]
-            if i > 20:
-                break
-            print prediction.car.printType(), "&", prediction.car.CO2uitstootgecombineerd, "&", prediction.CO2, "&", prediction.difference, """\\\\"""
-            if prediction.car.Handelsbenaming.startswith("Dummy"):
-                preds.append(prediction.car.Handelsbenaming)
-        print preds
-        print len(preds)
+    foundDummies = []
+    for i in range(0, len(predictions)):
+        prediction = predictions[i]
+        if i > 20:
+            break
+        if prediction.car.Handelsbenaming.startswith("Dummy"):
+            foundDummies.append(prediction.car.Handelsbenaming)
+    for foundDummy in foundDummies:
+        print foundDummy, "found"
+    print len(foundDummies), "dummies found"

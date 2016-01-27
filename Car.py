@@ -1,3 +1,8 @@
+# Universiteit van Amsterdam - Kunstmatige Intelligentie BSc
+# Leren en Beslissen Project - Sjoemel
+# Jelmer Alphenaar, Tjalling Haije, Joseph Weel & Roderick van der Weerdt
+# 27 januari 2016
+
 class Car:
     def __init__(self):
         self.Aantalcilinders = ""

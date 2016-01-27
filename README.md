@@ -4,7 +4,7 @@ Hier staan de programma's die gebruikt zijn voor het Leren en Beslissen project.
 
 <hr />
 
-Nu volgt instructries voor het uitvoeren van de programma's, en wat zij doen:
+Nu volgt instructries over het uitvoeren van de programma's, en wat zij doen:
 
 #### Car.py
 
